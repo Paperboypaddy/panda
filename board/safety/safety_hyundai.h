@@ -105,11 +105,13 @@ RxCheck hyundai_non_scc_addr_checks[] = {
 const int HYUNDAI_PARAM_LFA_BTN = 256;
 const int HYUNDAI_PARAM_ESCC = 512;
 const int HYUNDAI_PARAM_NON_SCC = 1024;
+const int HYUNDAI_PARAM_EMULATED_SCC = 2048;
 
 bool hyundai_legacy = false;
 bool hyundai_lfa_button = false;
 bool hyundai_escc = false;
 bool hyundai_non_scc = false;
+bool hyundai_emulated_scc = false;
 
 
 static uint8_t hyundai_get_counter(const CANPacket_t *to_push) {
@@ -389,6 +391,7 @@ static safety_config hyundai_init(uint16_t param) {
   hyundai_lfa_button = GET_FLAG(param, HYUNDAI_PARAM_LFA_BTN);
   hyundai_escc = GET_FLAG(param, HYUNDAI_PARAM_ESCC);
   hyundai_non_scc = GET_FLAG(param, HYUNDAI_PARAM_NON_SCC);
+  hyundai_emulated_scc = GET_FLAG(param, HYUNDAI_PARAM_EMULATED_SCC);
 
   safety_config ret;
   if (hyundai_longitudinal && hyundai_camera_scc) {
@@ -399,6 +402,8 @@ static safety_config hyundai_init(uint16_t param) {
     ret = BUILD_SAFETY_CFG(hyundai_cam_scc_rx_checks, HYUNDAI_CAMERA_SCC_TX_MSGS);
   } else if (hyundai_non_scc) {
     ret = BUILD_SAFETY_CFG(hyundai_non_scc_addr_checks, HYUNDAI_TX_MSGS);
+  } else if (hyundai_emulated_scc) {
+    ret = BUILD_SAFETY_CFG(hyundai_non_scc_addr_checks, HYUNDAI_LONG_TX_MSGS);
   } else {
     ret = BUILD_SAFETY_CFG(hyundai_rx_checks, HYUNDAI_TX_MSGS);
   }
