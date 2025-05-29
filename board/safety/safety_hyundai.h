@@ -34,7 +34,7 @@ const CanMsg HYUNDAI_TX_MSGS[] = {
 const CanMsg HYUNDAI_LONG_TX_MSGS[] = {
   {0x340, 0, 8}, {0x340, 2, 8}, // LKAS11 Bus 0, 2
   {0x4F1, 0, 4}, {0x4F1, 2, 4}, // CLU11 Bus 0, 2
-  {0x251, 0 8}, {0x251, 2, 8}, // MDPS12 Bus 0, 2
+  {0x251, 0, 8}, {0x251, 2, 8}, // MDPS12 Bus 0, 2
   {0x485, 0, 4}, // LFAHDA_MFC Bus 0
   {0x420, 0, 8}, // SCC11 Bus 0
   {0x421, 0, 8}, // SCC12 Bus 0
