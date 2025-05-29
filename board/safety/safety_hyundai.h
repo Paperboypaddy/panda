@@ -26,14 +26,15 @@ const LongitudinalLimits HYUNDAI_LONG_LIMITS = {
 };
 
 const CanMsg HYUNDAI_TX_MSGS[] = {
-  {0x340, 0, 8}, // LKAS11 Bus 0
-  {0x4F1, 0, 4}, // CLU11 Bus 0
+  {0x340, 0, 8}, {0x340, 2, 8}, // LKAS11 Bus 0, 2
+  {0x4F1, 0, 4}, {0x4F1, 2, 4}, // CLU11 Bus 0, 2
   {0x485, 0, 4}, // LFAHDA_MFC Bus 0
 };
 
 const CanMsg HYUNDAI_LONG_TX_MSGS[] = {
-  {0x340, 0, 8}, // LKAS11 Bus 0
-  {0x4F1, 0, 4}, // CLU11 Bus 0
+  {0x340, 0, 8}, {0x340, 2, 8}, // LKAS11 Bus 0, 2
+  {0x4F1, 0, 4}, {0x4F1, 2, 4}, // CLU11 Bus 0, 2
+  {0x251, 0 8}, {0x251, 2, 8}, // MDPS12 Bus 0, 2
   {0x485, 0, 4}, // LFAHDA_MFC Bus 0
   {0x420, 0, 8}, // SCC11 Bus 0
   {0x421, 0, 8}, // SCC12 Bus 0
@@ -368,7 +369,12 @@ static int hyundai_fwd_hook(int bus_num, int addr) {
 
   // forward cam to ccan and viceversa, except lkas cmd
   if (bus_num == 0) {
-    bus_fwd = 2;
+    int is_clu11_msg = (addr == 0x4F1);
+
+    int block_msg = is_clu11_msg;
+    if (!block_msg) {
+      bus_fwd = 2;
+    }
   }
   if (bus_num == 2) {
     int is_lkas11_msg = (addr == 0x340);
